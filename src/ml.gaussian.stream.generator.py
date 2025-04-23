@@ -9,7 +9,6 @@ from itertools import combinations
 from scipy.spatial import cKDTree  # Import KD-Tree for fast spatial queries
 import csv  # Import CSV module for saving data
 
-
 # Canvas settings
 WIDTH, HEIGHT = 6, 6  # Inches for Matplotlib figure
 GRID_SIZE = 0.2  # Defines smaller grid cells in lattice coordinates
@@ -131,14 +130,17 @@ def on_mouse_up(event):
         end_time_box.set_val("")
 
 
-def save_stream_to_csv(filename="stream_data.csv"):
+def save_stream_to_csv(filename="stream_data"):
     """Saves the interleaved stream data to a CSV file."""
     if not point_classifications:
         print("No data to save.")
         return
+    
+    timestamp = time.strftime("%H_%M")
+    full_filename = f"./csv/{filename}_{timestamp}.csv"
 
 
-    with open(filename, mode='w', newline='') as file:
+    with open(full_filename, mode='w', newline='') as file:
         writer = csv.writer(file)
         header = ["global_timestamp", "timestamp", "x", "y"] + [f"cluster_{i+1}" for i in range(len(centroid_trajectories))]
         writer.writerow(header)
